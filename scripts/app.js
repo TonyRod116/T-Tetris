@@ -13,20 +13,8 @@ const toggleProjectionBtn = document.getElementById("toggleProjection")
 const toggleTPiecesBtn = document.getElementById("toggleTPieces")
 
 
-const shapeTypes = [
-    "blueShape",    
-    "redShape",     
-    "greenShape",  
-    "yellowShape",
-    "purpleShape", 
-    "orangeShape",  
-    "pinkShape",   
-    "magicShape"   
-]
-
 
 //variables
-
 let board = ''
 let socre = 0
 let highscore = 0
@@ -128,9 +116,7 @@ function createBoard() {
 }
 
 function createRandomShape() {
-    const cell = cellElements[currentPos]
-    const shapeNum = Math.floor(Math.random() * shapeTypes.length);
-    currentShape = shapeTypes[shapeNum]
+    const shapeNum = Math.floor(Math.random() * 7);
         if (shapeNum === 0) {
         Shape0(currentPos)
         } 
@@ -162,6 +148,7 @@ function startGameFunction() {
     createMainBoard()
     createBoard()
     createRandomShape()
+   // startInterval()
     
     //cellElements[15].classList.add("shapeL")
     //const getCachedPiece = board.classList.add('ShapeL')
