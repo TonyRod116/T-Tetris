@@ -33,12 +33,21 @@ let highscore = 0
 let randomPiece = 0
 let shapeNum = ''
 let currentPos = 24
+let currentShape = ''
+let cell = ''
 
 //functions
 
+// Blue "L" Shape:
+function Shape0(currentPos) {
+    cellElements[currentPos].classList.add("blueShape");
+    cellElements[currentPos - 10].classList.add("blueShape");
+    cellElements[currentPos - 20].classList.add("blueShape");
+    cellElements[currentPos + 1].classList.add("blueShape");
+}
+
 function Shape1() {
     
-
 }
 
 function createMainBoard() {
@@ -66,10 +75,35 @@ function createBoard() {
 }
 
 function createRandomShape() {
-    const cell = cellElements[currentPos]
-    const shapeNum = Math.floor(Math.random() * shapeTypes.length);
-    cell.classList.add(shapeTypes[shapeNum]);
-    console.log(shapeNum)
+    //const cell = cellElements[currentPos]
+    //const shapeNum = Math.floor(Math.random() * shapeTypes.length);
+    const shapeNum = 0
+    //currentShape = shapeTypes[shapeNum]
+    //cell.classList.add(shapeTypes[0]);
+        if (shapeNum === 0) {
+        Shape0(currentPos)
+        } 
+        if (shapeNum === 1) {
+            Shape1(currentPos)
+        }
+        if (shapeNum === 2) {
+            Shape2(currentPos)
+        }
+        if (shapeNum === 3) {
+            Shape3(currentPos)
+        }
+        if (shapeNum === 4) {
+            Shape4(currentPos)
+        }
+        if (shapeNum === 5) {
+            Shape5(currentPos)
+        }
+        if (shapeNum === 6) {
+            Shape6(currentPos)
+        }
+        if (shapeNum === 7) {
+            Shape7(currentPos)
+        }
 }
 
 
