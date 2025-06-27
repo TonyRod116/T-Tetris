@@ -24,7 +24,7 @@
 
 #board div {
     display: inline-block;
-    border: 1px dashed rgb(211, 233, 211);
+    //border: 1px dashed rgb(211, 233, 211);
 }
 
 @media (max-width: 124px) {
@@ -53,13 +53,13 @@
 }
 
 #start-btn:hover {
-    background-color: #09ad32;
+    background-color: #075f1d;
 }
 
 
 
 .blueShape {
-    background-color: #0000ff;
+    background-color: #1d72e2;
 }
 
 .redShape {
@@ -71,7 +71,7 @@
 }
 
 .yellowShape {
-    background-color: #ffff00;
+    background-color: #f1f510;
 }
 
 .purpleShape {
@@ -79,15 +79,16 @@
 }
 
 .orangeShape {
-    background-color: #ffa500;
+    background-color: #ff9c1b;
 }
 
 .pinkShape {
-    background-color: #ffc0cb;
+    background-color: #ca0065;
 }
 
-.brownShape {
-    background-color: #a52a2a;
+.magicShape {
+    background-image: url(../assets/magicShape.png);
+    background-size: cover;
 }
 
 #tetrisLogo {

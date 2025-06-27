@@ -21,7 +21,7 @@ const shapeTypes = [
     "purpleShape", 
     "orangeShape",  
     "pinkShape",   
-    "brownShape"   
+    "magicShape"   
 ]
 
 
@@ -46,10 +46,63 @@ function Shape0(currentPos) {
     cellElements[currentPos + 1].classList.add("blueShape");
 }
 
-function Shape1() {
-    
+// Red "inverted L" Shape:
+function Shape1(currentPos) {
+    cellElements[currentPos + 1].classList.add("redShape");
+    cellElements[currentPos - 9].classList.add("redShape");
+    cellElements[currentPos - 19].classList.add("redShape");
+    cellElements[currentPos].classList.add("redShape");
 }
 
+// Green "S" Shape:
+function Shape2(currentPos) {
+    cellElements[currentPos +1].classList.add("greenShape");
+    cellElements[currentPos - 9].classList.add("greenShape");
+    cellElements[currentPos - 10].classList.add("greenShape");
+    cellElements[currentPos - 20].classList.add("greenShape");
+}
+
+// Yellow "inverted S" Shape:
+function Shape3(currentPos) {
+    cellElements[currentPos].classList.add("yellowShape");
+    cellElements[currentPos - 10].classList.add("yellowShape");
+    cellElements[currentPos - 9].classList.add("yellowShape");
+    cellElements[currentPos - 19].classList.add("yellowShape");
+}
+
+// Purple "Mountain" Shape:
+function Shape4(currentPos) {
+    cellElements[currentPos].classList.add("purpleShape");
+    cellElements[currentPos - 10].classList.add("purpleShape");
+    cellElements[currentPos - 20].classList.add("purpleShape");
+    cellElements[currentPos - 9].classList.add("purpleShape");
+}
+
+// Orange "O" Shape:
+function Shape5(currentPos) {
+    cellElements[currentPos - 20].classList.add("orangeShape");
+    cellElements[currentPos - 10].classList.add("orangeShape");
+    cellElements[currentPos - 9].classList.add("orangeShape");
+    cellElements[currentPos - 19].classList.add("orangeShape");
+}
+
+// Pink "I" Shape:
+function Shape6(currentPos) {
+    cellElements[currentPos - 20].classList.add("pinkShape");
+    cellElements[currentPos - 10].classList.add("pinkShape");
+    cellElements[currentPos +10].classList.add("pinkShape");
+    cellElements[currentPos].classList.add("pinkShape");
+    cellElements[currentPos + 20].classList.add("pinkShape");
+}
+
+// Magic "T" Shape:
+function Shape7(currentPos) {
+    cellElements[currentPos ].classList.add("magicShape");
+    cellElements[currentPos - 10].classList.add("magicShape");
+    cellElements[currentPos - 19].classList.add("magicShape");
+    cellElements[currentPos - 20].classList.add("magicShape");
+    cellElements[currentPos - 21].classList.add("magicShape");
+}
 function createMainBoard() {
     const firstScreen = document.getElementById('firstScreen');
     const main = document.createElement('main');
@@ -77,7 +130,7 @@ function createBoard() {
 function createRandomShape() {
     //const cell = cellElements[currentPos]
     //const shapeNum = Math.floor(Math.random() * shapeTypes.length);
-    const shapeNum = 0
+    const shapeNum = 7
     //currentShape = shapeTypes[shapeNum]
     //cell.classList.add(shapeTypes[0]);
         if (shapeNum === 0) {
