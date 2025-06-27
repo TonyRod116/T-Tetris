@@ -1,0 +1,89 @@
+* {
+    box-sizing: border-box;
+}
+
+#main-board {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: center;
+}
+
+#board {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+    height: 1000px;
+    width: 500px;
+}
+
+#board div {
+    display: inline-block;
+    border: 1px dashed rgb(211, 233, 211);
+}
+
+@media (max-width: 124px) {
+    #board {
+        height: 500px;
+        width: 250px;
+    }
+}
+
+#start-game {
+    margin-top: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#start-btn {
+    margin-top: 10vh;
+    font-family: 'Press Start 2P', Courier, monospace;
+    font-size: 20px;
+    padding: 50px 40px;
+    border-radius: 10px;
+    background-color: #c77415;
+    color: #fff;
+
+}
+
+#start-btn:hover {
+    background-color: #09ad32;
+}
+
+
+
+.blueShape {
+    background-color: #0000ff;
+}
+
+.redShape {
+    background-color: #ff0000;
+}
+
+.greenShape {
+    background-color: #00ff00;
+}
+
+.yellowShape {
+    background-color: #ffff00;
+}
+
+.purpleShape {
+    background-color: #800080;
+}
+
+.orangeShape {
+    background-color: #ffa500;
+}
+
+.pinkShape {
+    background-color: #ffc0cb;
+}
+
+.brownShape {
+    background-color: #a52a2a;
+}
+
+#tetrisLogo {
+    src: url(../assets/tetrisLogo.png);
+}
