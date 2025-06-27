@@ -56,7 +56,7 @@ function Shape1(currentPos) {
 
 // Green "S" Shape:
 function Shape2(currentPos) {
-    cellElements[currentPos +1].classList.add("greenShape");
+    cellElements[currentPos + 1].classList.add("greenShape");
     cellElements[currentPos - 9].classList.add("greenShape");
     cellElements[currentPos - 10].classList.add("greenShape");
     cellElements[currentPos - 20].classList.add("greenShape");
@@ -90,7 +90,7 @@ function Shape5(currentPos) {
 function Shape6(currentPos) {
     cellElements[currentPos - 20].classList.add("pinkShape");
     cellElements[currentPos - 10].classList.add("pinkShape");
-    cellElements[currentPos +10].classList.add("pinkShape");
+    cellElements[currentPos + 10].classList.add("pinkShape");
     cellElements[currentPos].classList.add("pinkShape");
     cellElements[currentPos + 20].classList.add("pinkShape");
 }
@@ -128,11 +128,9 @@ function createBoard() {
 }
 
 function createRandomShape() {
-    //const cell = cellElements[currentPos]
-    //const shapeNum = Math.floor(Math.random() * shapeTypes.length);
-    const shapeNum = 7
-    //currentShape = shapeTypes[shapeNum]
-    //cell.classList.add(shapeTypes[0]);
+    const cell = cellElements[currentPos]
+    const shapeNum = Math.floor(Math.random() * shapeTypes.length);
+    currentShape = shapeTypes[shapeNum]
         if (shapeNum === 0) {
         Shape0(currentPos)
         } 
