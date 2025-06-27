@@ -1,6 +1,9 @@
 * {
     box-sizing: border-box;
+    margin: 0;
 }
+
+
 #tetrisLogo {
     display: block;
     margin: 0 auto;
@@ -47,7 +50,7 @@
     font-size: 20px;
     padding: 50px 40px;
     border-radius: 10px;
-    background-color: #c77415;
+    background-color: #a18b09;
     color: #fff;
 
 }
