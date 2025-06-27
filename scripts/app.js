@@ -12,16 +12,18 @@ const gameOverDisplay = document.getElementById("gameOver")
 const toggleProjectionBtn = document.getElementById("toggleProjection")
 const toggleTPiecesBtn = document.getElementById("toggleTPieces")
 
-/*
-const shapeL = 
-const shapeLi = 
-const shapeS =
-const shapeSi =
-const shapeI =
-const shapeO =
-const shapeTt =
-const shape TT =
-*/
+
+const shapeTypes = [
+    "blueShape",    
+    "redShape",     
+    "greenShape",  
+    "yellowShape",
+    "purpleShape", 
+    "orangeShape",  
+    "pinkShape",   
+    "brownShape"   
+]
+
 
 //variables
 
@@ -29,13 +31,15 @@ let board = ''
 let socre = 0
 let highscore = 0
 let randomPiece = 0
+let shapeNum = ''
+let currentPos = 24
 
 //functions
 
-/*<main id="main-board">
-                <section id="board">
-                </section>
-            </main>*/
+function Shape1() {
+    
+
+}
 
 function createMainBoard() {
     const firstScreen = document.getElementById('firstScreen');
@@ -61,12 +65,18 @@ function createBoard() {
     }
 }
 
-
+function createRandomShape() {
+    const cell = cellElements[currentPos]
+    const shapeNum = Math.floor(Math.random() * shapeTypes.length);
+    cell.classList.add(shapeTypes[shapeNum]);
+    console.log(shapeNum)
+}
 
 
 function startGameFunction() {
     createMainBoard()
     createBoard()
+    createRandomShape()
     
     //cellElements[15].classList.add("shapeL")
     //const getCachedPiece = board.classList.add('ShapeL')

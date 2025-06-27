@@ -1,9 +1,15 @@
 * {
     box-sizing: border-box;
 }
+#tetrisLogo {
+    display: block;
+    margin: 0 auto;
+    max-width: 80%;
+    max-height: 80%;
+}
 
 #main-board {
-    min-height: 100vh;
+    min-height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
