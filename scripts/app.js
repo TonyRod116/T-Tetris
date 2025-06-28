@@ -15,6 +15,8 @@ const toggleTPiecesBtn = document.getElementById("toggleTPieces")
 
 
 //variables
+let interval = null
+let occupied = []
 let board = ''
 let socre = 0
 let highscore = 0
@@ -112,6 +114,55 @@ function Shape7(currentPos) {
     cellElements[currentPos - 21].classList.add("magicShape");
 }
 
+function currentShapeCollisionPoints(currentPos,shapeNum) {
+    if (shapeNum === 0) {
+        return [currentPos + 10, currentPos, currentPos - 10, currentPos + 11]
+    }
+    if (shapeNum === 1) {
+        return [currentPos + 11, currentPos + 1, currentPos -9, currentPos + 10]
+    }
+    if (shapeNum === 2) {
+        return [currentPos + 11, currentPos + 1, currentPos, currentPos -10]
+    }
+    if (shapeNum === 3) {
+        return [currentPos + 10, currentPos, currentPos +1, currentPos - 9]
+    }
+    if (shapeNum === 4) {
+        return [currentPos + 10, currentPos, currentPos - 10, currentPos + 1]
+    }
+    if (shapeNum === 5) {
+        return [currentPos - 10, currentPos, currentPos + 1, currentPos -9]
+    }
+    if (shapeNum === 6) {
+        return [currentPos - 10, currentPos, currentPos + 20, currentPos + 10, currentPos + 30]
+    }
+    if (shapeNum === 7) {
+        return [currentPos + 10, currentPos, currentPos -9, currentPos -10, currentPos -11]
+    }
+    console.log(currentShapeCollisionPoints)
+}
+
+function getAllOccupiedIndexes() {
+    const occupied = [];
+    for (let i = 0; i < cellElements.length; i++) {
+        if (cellElements[i].classList.contains("occupied")) 
+            {
+            occupied.push(i); 
+        }
+        
+    }
+    occupied.push (210, 211, 212, 213, 214, 215, 216, 217, 218, 219);
+    return occupied;
+}
+
+function stoppedShape(currentPos,currentShapeNum) {
+    const occupied = currentShapeCollisionPoints(currentPos,currentShapeNum)
+    for (let i = 0; i < cellElements.length; i++) {
+        if (occupied.includes(i)) {
+            cellElements[i].classList.add("occupied")
+        }
+    }
+}
 
 function createMainBoard() {
     const firstScreen = document.getElementById('firstScreen');
@@ -128,7 +179,7 @@ function createBoard() {
     for (let i = 0; i < cellCount; i++) {
         const cell = document.createElement("div")
         cell.classList.add("cell")
-        //cell.innerText = i
+        cell.innerText = i
         cell.dataset.index = i
         cell.style.width = `${100 / columns}%`
         cell.style.height = `${100 / rows}%`
@@ -140,7 +191,6 @@ function createBoard() {
 function createRandomShape() {
     const shapeNum = Math.floor(Math.random() * 8);
     currentShapeNum = shapeNum
-    drawShape(currentPos,shapeNum)
 }
 
 function clearLastShape(currentPos,shapeNum) {
@@ -196,7 +246,18 @@ function clearLastShape(currentPos,shapeNum) {
     }
 }
 
+function collision() {
+    const shapeCollisionPoints = currentShapeCollisionPoints(currentPos,currentShapeNum)
+    const occupiedIndexes = getAllOccupiedIndexes()
+    return shapeCollisionPoints.some(index => occupiedIndexes.includes(index + columns)) //needed help for the +columns constant
+}
 
+
+function startAgain() {
+    currentPos = 24
+    createRandomShape()
+    drawShape(currentPos,currentShapeNum);
+}
 
 function moveShapeLeft() {
     currentPos-- 
@@ -206,15 +267,22 @@ function moveShapeRight() {
     currentPos++
 }
 
-function moveShapeDown() { 
-    clearLastShape(currentPos,currentShapeNum);
-    currentPos += columns
-    drawShape(currentPos,currentShapeNum)
+function startPlayDown() { 
+    if (collision ()) { 
+        clearInterval(interval);
+        stoppedShape(currentPos,currentShapeNum)
+        getAllOccupiedIndexes()
+        startAgain()
+        startInterval()
+    } else {
+        clearLastShape(currentPos,currentShapeNum)
+        currentPos += 10
+        drawShape(currentPos,currentShapeNum)
+    }
 }
 
 function startInterval() {
-    interval = setInterval(moveShapeDown, 200)
-    moveShapeDown(currentShape)
+        interval = setInterval(startPlayDown, 200)
 }
 
 
@@ -222,8 +290,11 @@ function startGameFunction() {
     createMainBoard()
     createBoard()
     createRandomShape()
+    drawShape(currentPos,currentShapeNum);
     startInterval()
-    
+
+
+
     //cellElements[15].classList.add("shapeL")
     //const getCachedPiece = board.classList.add('ShapeL')
 }

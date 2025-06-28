@@ -27,7 +27,6 @@
 
 #board div {
     display: inline-block;
-    //border: 1px dashed rgb(211, 233, 211);
 }
 
 @media (max-width: 124px) {
