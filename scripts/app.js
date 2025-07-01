@@ -93,6 +93,7 @@ const toggleTPiecesBtn = document.getElementById("toggleTPieces")
 
 //variables
 let currentShape = 'L';
+let nextCellElements = [];
 let currentPos = startingPos;
 let interval = null
 let score = 0
@@ -131,9 +132,24 @@ function createMainBoard() {
     const main = document.createElement('main');
     main.id = 'main-board';
     firstScreen.appendChild(main); 
-    const section = document.createElement('section');
-    section.id = 'board' 
-    main.appendChild(section);
+    const boardSection = document.createElement('section');
+    boardSection.id = 'board';
+    main.appendChild(boardSection);
+    const scoreboard = document.createElement('div');
+    scoreboard.id = 'scoreboard';
+    scoreboard.innerHTML = `
+        <h2>Score</h2>
+        <div id="score">0</div>
+        <h3>Next</h3>
+        <div id="next">0</div>
+    `;
+    main.appendChild(scoreboard);
+}
+
+function createScoreboard() {
+    const scoreboard = document.createElement('div');
+    scoreboard.id = 'scoreboard';
+    main.appendChild(scoreboard);
 }
 
 function createBoard() {
@@ -147,6 +163,19 @@ function createBoard() {
         board.appendChild(cell)
     }
 }
+
+function createNextShapeBoard() {
+    const nextShapeBoard = document.getElementById("next")
+    nextBoard.innerHTML = ""; 
+    nextCellElements = [];
+    for (let i = 0; i < 16; i++) {
+        const cell = document.createElement("div");
+        cell.classList.add("cell");
+        nextCellElements.push(cell);
+        nextShapeBoard.appendChild(cell);
+    }
+}
+
 
 function createRandomShape() {
     const idx = Math.floor(Math.random() * shapeChoices.length);
@@ -207,24 +236,64 @@ function rightCollision() {
     return false; 
 }
 
+function checkRows() { // helped
+    for (let i = 0; i < rows; i++) {
+        const row = cellElements.slice(i * columns, (i + 1) * columns);
+        if (row.every(cell => cell.classList.contains('occupied'))) {
+            clearInterval(interval);
+            row.forEach(cell => { // helped by chatgpt
+                cell.classList.remove('blink');
+                void cell.offsetWidth;
+                cell.classList.add('blink');
+            });
+            setTimeout(() => {
+                row.forEach(cell => {
+                    cell.classList.remove('blink');
+                    cell.classList.remove('occupied');
+                    cell.classList.remove('blueShape');
+                    cell.classList.remove('redShape');
+                    cell.classList.remove('greenShape');
+                    cell.classList.remove('yellowShape');
+                    cell.classList.remove('purpleShape');
+                    cell.classList.remove('orangeShape');
+                    cell.classList.remove('pinkShape');
+                    cell.classList.remove('magicShape');
+                });
+                for (let j = i * columns - 1; j >= 0; j--) {
+                    cellElements[j + columns].className = cellElements[j].className;
+                }
+                for (let j = 0; j < columns; j++) {
+                    cellElements[j].className = 'cell';
+                }
+                checkRows();
+            }, 880);
+            return;
+        }
+    }
+    startInterval();
+}
+
+
 
 function startPlayDown() {
+    clearInterval(interval);
     if (downCollision()) {
-        clearInterval(interval);
         stoppedShape();
+        checkRows();
         currentPos = startingPos;
         createRandomShape();
         if (downCollision()) {
             drawShape();
             setTimeout(gameOver, 50);
+            clearInterval(interval);
             return;
         }
         drawShape();
-        startInterval();
     } else {
         clearLastShape();
         currentPos += columns;
         drawShape();
+        startInterval();
     }
 }
 
@@ -264,7 +333,7 @@ function moveShape(event) {
             drawShape();
         }
     }
-    if (keypressed === "ArrowUp" || keypressed === "e" || keypressed === "E") {
+    if (keypressed === "ArrowUp" || keypressed === "d" || keypressed === "D") {
         let nextRotation = (currentRotation + 1) % shapes[currentShape].rotations.length;
         if (canRotate(nextRotation)) {
             clearLastShape();
@@ -273,7 +342,7 @@ function moveShape(event) {
         }
     }
 
-    if (keypressed === "q" || keypressed === "Q") {
+    if (keypressed === "a" || keypressed === "A") {
         let nextRotation = (currentRotation - 1 + shapes[currentShape].rotations.length) % shapes[currentShape].rotations.length;
         if (canRotate(nextRotation)) {
             clearLastShape();
@@ -285,8 +354,9 @@ function moveShape(event) {
 
 function startGameFunction() {
     createMainBoard()
-    createBoard()
+    createBoard();
     createRandomShape()
+    
     drawShape();
     startInterval()
 }
