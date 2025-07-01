@@ -1,5 +1,5 @@
 // constants
-const startingPos = 34
+const startingPos = 24
 const columns = 10
 const rows = 20
 const cellCount = columns * rows
@@ -11,37 +11,78 @@ const shapeChoices = ['L', 'Li', 'S', 'Si', 'M', 'O', 'I', 'T'];
 const shapes = {
     L: {
         className: 'blueShape',
-        coords: [-(columns*2), -columns, 0, 1]
+        rotations: [
+            [-(columns*2), -columns, 0, 1],
+            [-(columns)+1, -(columns)-1, -(columns), -1],      
+            [-(columns*2) -1, -(columns*2), -(columns), 0], 
+            [-(columns)+1, -(columns)-1, -(columns), -(columns*2)+1],  
+        ]
     },
     Li: {
         className: 'redShape',
-        coords: [-(columns*2) + 1, -(columns) + 1, 0, 1]
+        rotations: [
+            [-(columns*2) +1, -(columns) +1, 0, 1], 
+            [-(columns*2) -1, -(columns) -1, -(columns), -(columns) +1,],
+            [-(columns*2), -(columns*2) +1, -(columns), 0],
+            [-(columns) -1, -(columns), -(columns) +1, 1],
+        ]
     },
     S: {
         className: 'greenShape',
-        coords: [-(columns*2), -columns, -(columns) + 1, 1]
+        rotations: [
+            [-(columns*2), -columns, -(columns)+1, 1],
+            [-(columns*2) +1, -(columns*2), -(columns) -1, -(columns)],
+            [-(columns*2), -columns, -(columns)+1, 1],
+            [-(columns*2) +1, -(columns*2), -(columns) -1, -(columns)],
+        ]
     },
     Si: {
         className: 'yellowShape',
-        coords: [-(columns*2) + 1, -(columns) +1, -columns, 0]
+        rotations: [
+            [-(columns*2) +1, -(columns) +1, -(columns), 0],
+            [-(columns) -1, -(columns), 0, 1],
+            [-(columns*2) +1, -(columns) +1, -(columns), 0],
+            [-(columns) -1, -(columns), 0, 1],
+        ]
     },
     M: {
         className: 'purpleShape',
-        coords: [-(columns*2), -columns, -(columns*2 + 1), 0]
+        rotations: [
+            [-(columns*2), -columns, -(columns) + 1, 0],
+            [-(columns), -(columns)-1, -(columns) + 1, 0],
+            [-(columns*2), -(columns)-1, -(columns), 0],
+            [-(columns*2), -(columns) -1, -(columns), -(columns) + 1],
+        ]
     },
     O: {
         className: 'orangeShape',
-        coords: [-(columns*2), -(columns*2) +1, -(columns), -(columns) +1]
+        rotations: [
+            [-(columns), -columns+1, 0, 1],
+            [-(columns), -columns+1, 0, 1],
+            [-(columns), -columns+1, 0, 1],
+            [-(columns), -columns+1, 0, 1],
+        ]
     },
     I: {
         className: 'pinkShape',
-        coords: [-(columns*2), -columns, 0, columns, columns*2]
+        rotations: [
+            [-(columns*2), -columns, 0, columns],
+            [-1, 0, 1, 2],
+            [-(columns*2), -columns, 0, columns],
+            [-1, 0, 1, 2],
+        ]
     },
     T: {
         className: 'magicShape',
-        coords: [-(columns*2), -(columns*2) +1, -(columns*2) +2, -columns +1, 1]
+        rotations: [
+            [-(columns*2), -(columns*2) -1, -(columns*2) +1, -columns, 0],
+            [-(columns*2) +1, -(columns) -1, -(columns), -(columns) +1, 1],
+            [-(columns*2), -columns, -1, 0, 1],
+            [-(columns*2) -1,-(columns) -1, -(columns), -(columns) +1, -1], 
+        ]
     }
 };
+
 
 const scoreDisplay = document.getElementById("score")
 const gameOverDisplay = document.getElementById("gameOver")
@@ -56,18 +97,19 @@ let currentPos = startingPos;
 let interval = null
 let score = 0
 let highscore = 0
+let currentRotation = 0
 
 
 //functions
 
 function drawShape() {
-    for (let position of shapes[currentShape].coords) {
+    for (let position of shapes[currentShape].rotations[currentRotation]) {
         cellElements[position + currentPos].classList.add(shapes[currentShape].className);
     }
 }
 
 function clearLastShape() {
-    for (let pos of shapes[currentShape].coords) {
+    for (let pos of shapes[currentShape].rotations[currentRotation]) {
         let cell = cellElements[currentPos + pos];
         if (cell) cell.classList.remove(shapes[currentShape].className);
     }
@@ -79,7 +121,7 @@ function gameOver() {
 }
 
 function stoppedShape() {
-    for (let pos of shapes[currentShape].coords) {
+    for (let pos of shapes[currentShape].rotations[currentRotation]) {
         cellElements[currentPos + pos].classList.add('occupied');
     }
 }
@@ -109,10 +151,11 @@ function createBoard() {
 function createRandomShape() {
     const idx = Math.floor(Math.random() * shapeChoices.length);
     currentShape = shapeChoices[idx];
+    currentRotation = 0;
 }
 
 function downCollision() {
-    const coords = shapes[currentShape].coords;
+    const coords = shapes[currentShape].rotations[currentRotation];
     for (let i = 0; i < coords.length; i++) {
         const cellIdx = currentPos + coords[i];
         const cellBelowIdx = cellIdx + columns;
@@ -125,8 +168,23 @@ function downCollision() {
 }
 
 
+
+function canRotate(nextRotation) {
+    const nextCoords = shapes[currentShape].rotations[nextRotation];
+    const baseCol = currentPos % columns;  //got help for this one
+    for (let i = 0; i < nextCoords.length; i++) {
+        const idx = currentPos + nextCoords[i];
+        if (idx < 0 || idx >= cellCount) return false;
+        const col = idx % columns;
+        if (col < 0 || col >= columns) return false;
+        if (Math.abs(col - baseCol) > 3) return false; // this one too
+        if (cellElements[idx].classList.contains('occupied')) return false;
+    }
+    return true;
+}
+
 function leftCollision() {
-    const coords = shapes[currentShape].coords; 
+    const coords = shapes[currentShape].rotations[currentRotation]; 
     for (let i = 0; i < coords.length; i++) {
         const cellIdx = currentPos + coords[i];        
         const cellLeftToIdx = cellIdx - 1;        
@@ -138,7 +196,7 @@ function leftCollision() {
 }
 
 function rightCollision() {
-    const coords = shapes[currentShape].coords; 
+    const coords = shapes[currentShape].rotations[currentRotation]; 
     for (let i = 0; i < coords.length; i++) {
         const cellIdx = currentPos + coords[i];        
         const cellRightToIdx = cellIdx + 1;        
@@ -174,14 +232,13 @@ function startInterval() {
         interval = setInterval(startPlayDown, 200)
 }
 
-
-
 function moveShape(event) {
     const keypressed = event.key
     let canMove = true
+    const coords = shapes[currentShape].rotations[currentRotation];
     if (keypressed === "ArrowLeft" && leftCollision() === false) {
-        for (let i = 0; i < shapes[currentShape].coords.length; i++) {
-            const idx = currentPos + shapes[currentShape].coords[i];
+        for (let i = 0; i < coords.length; i++) {
+            const idx = currentPos + coords[i];
             if (idx % columns === 0) {
                 canMove = false;
                 break;
@@ -194,8 +251,8 @@ function moveShape(event) {
         }
     }
     if (keypressed === "ArrowRight" && rightCollision() === false ) {
-        for (let i = 0; i < shapes[currentShape].coords.length; i++) {
-            const idx = currentPos + shapes[currentShape].coords[i];
+        for (let i = 0; i < coords.length; i++) {
+            const idx = currentPos + coords[i];
             if (idx % columns === 9) {
                 canMove = false;
                 break;
@@ -204,6 +261,23 @@ function moveShape(event) {
         if (canMove) {
             clearLastShape();
             currentPos++;
+            drawShape();
+        }
+    }
+    if (keypressed === "ArrowUp" || keypressed === "e" || keypressed === "E") {
+        let nextRotation = (currentRotation + 1) % shapes[currentShape].rotations.length;
+        if (canRotate(nextRotation)) {
+            clearLastShape();
+            currentRotation = nextRotation;
+            drawShape();
+        }
+    }
+
+    if (keypressed === "q" || keypressed === "Q") {
+        let nextRotation = (currentRotation - 1 + shapes[currentShape].rotations.length) % shapes[currentShape].rotations.length;
+        if (canRotate(nextRotation)) {
+            clearLastShape();
+            currentRotation = nextRotation;
             drawShape();
         }
     }
