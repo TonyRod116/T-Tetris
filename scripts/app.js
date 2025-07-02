@@ -92,6 +92,7 @@ const toggleTPiecesBtn = document.getElementById("toggleTPieces")
 
 //variables
 let currentShape = 'L';
+let nextShape = null
 let nextCellElements = [];
 let currentPos = startingPos;
 let interval = null
@@ -99,7 +100,7 @@ let score = 0
 let highscore = 0
 let currentRotation = 0
 let scoreDisplay;
-
+let nextBoardCells = [];
 
 //functions
 
@@ -138,12 +139,14 @@ function createMainBoard() {
     const scoreboard = document.createElement('div');
     scoreboard.id = 'scoreboard';
     scoreboard.innerHTML = `
+        <h2>Next</h2>
+        <div id="next-board"></div>
         <h2>Score</h2>
         <div id="score">0</div>
     `;
     main.appendChild(scoreboard);
     scoreDisplay = document.getElementById("score");
-
+    createNextBoard();
 }
 
 function createBoard() {
@@ -158,11 +161,55 @@ function createBoard() {
     }
 }
 
-function createRandomShape() {
-    const idx = Math.floor(Math.random() * shapeChoices.length);
-    currentShape = shapeChoices[idx];
-    currentRotation = 0;
+function createNextBoard() {
+    const nextBoard = document.getElementById('next-board');
+    nextBoard.innerHTML = ''; 
+    nextBoardCells = [];
+    for (let i = 0; i < 16; i++) {
+        const cell = document.createElement('div');
+        cell.classList.add('next-cell');
+        nextBoard.appendChild(cell);
+        nextBoardCells.push(cell);
+    }
 }
+
+function createRandomShape() {
+    if (nextShape === null) {
+        nextShape = shapeChoices[Math.floor(Math.random() * shapeChoices.length)];
+    }
+    currentShape = nextShape;
+    currentRotation = 0;
+    nextShape = shapeChoices[Math.floor(Math.random() * shapeChoices.length)];
+    drawNextShape();
+}
+
+
+function drawNextShape() {
+    // Limpia el mini-grid
+    nextBoardCells.forEach(cell => {
+        cell.className = 'next-cell';
+    });
+
+    const shape = shapes[nextShape];
+    const rotation = shape.rotations[0];
+    const basePos = 9; // Centrado en 4x4 (puedes probar 5 o 6 para ajustar)
+
+    for (let offset of rotation) {
+        // Offset está basado en columns=10, pero ahora queremos 4x4
+        let row = Math.floor(offset / columns);
+        let col = offset % columns;
+        if (col < 0) col += columns;
+
+        // Index para el grid 4x4
+        let idx = basePos + row * 4 + col;
+
+        // Solo pinta si el índice cae dentro del 4x4
+        if (idx >= 0 && idx < 16) {
+            nextBoardCells[idx].classList.add(shape.className);
+        }
+    }
+}
+
 
 function downCollision() {
     const coords = shapes[currentShape].rotations[currentRotation];
