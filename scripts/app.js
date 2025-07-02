@@ -84,7 +84,6 @@ const shapes = {
 };
 
 
-const scoreDisplay = document.getElementById("score")
 const gameOverDisplay = document.getElementById("gameOver")
 const toggleProjectionBtn = document.getElementById("toggleProjection")
 const toggleTPiecesBtn = document.getElementById("toggleTPieces")
@@ -99,6 +98,7 @@ let interval = null
 let score = 0
 let highscore = 0
 let currentRotation = 0
+let scoreDisplay;
 
 
 //functions
@@ -140,16 +140,10 @@ function createMainBoard() {
     scoreboard.innerHTML = `
         <h2>Score</h2>
         <div id="score">0</div>
-        <h3>Next</h3>
-        <div id="next">0</div>
     `;
     main.appendChild(scoreboard);
-}
+    scoreDisplay = document.getElementById("score");
 
-function createScoreboard() {
-    const scoreboard = document.createElement('div');
-    scoreboard.id = 'scoreboard';
-    main.appendChild(scoreboard);
 }
 
 function createBoard() {
@@ -163,19 +157,6 @@ function createBoard() {
         board.appendChild(cell)
     }
 }
-
-function createNextShapeBoard() {
-    const nextShapeBoard = document.getElementById("next")
-    nextBoard.innerHTML = ""; 
-    nextCellElements = [];
-    for (let i = 0; i < 16; i++) {
-        const cell = document.createElement("div");
-        cell.classList.add("cell");
-        nextCellElements.push(cell);
-        nextShapeBoard.appendChild(cell);
-    }
-}
-
 
 function createRandomShape() {
     const idx = Math.floor(Math.random() * shapeChoices.length);
@@ -236,41 +217,54 @@ function rightCollision() {
     return false; 
 }
 
-function checkRows() { // helped
+function checkRows() { 
+    let rowsToDelete = [];
     for (let i = 0; i < rows; i++) {
-        const row = cellElements.slice(i * columns, (i + 1) * columns);
+        const start = i * columns;
+        const end = start + columns;
+        const row = cellElements.slice(start, end);
         if (row.every(cell => cell.classList.contains('occupied'))) {
-            clearInterval(interval);
-            row.forEach(cell => { // helped by chatgpt
+            rowsToDelete.push(i);
+        }
+    }
+    if (rowsToDelete.length > 0) {
+        clearInterval(interval);
+        score += rowsToDelete.length * 100;
+        scoreDisplay.textContent = score;
+        rowsToDelete.forEach(rowIdx => {
+            const start = rowIdx * columns;
+            const end = start + columns;
+            cellElements.slice(start, end).forEach(cell => {
                 cell.classList.remove('blink');
                 void cell.offsetWidth;
                 cell.classList.add('blink');
             });
-            setTimeout(() => {
-                row.forEach(cell => {
-                    cell.classList.remove('blink');
-                    cell.classList.remove('occupied');
-                    cell.classList.remove('blueShape');
-                    cell.classList.remove('redShape');
-                    cell.classList.remove('greenShape');
-                    cell.classList.remove('yellowShape');
-                    cell.classList.remove('purpleShape');
-                    cell.classList.remove('orangeShape');
-                    cell.classList.remove('pinkShape');
-                    cell.classList.remove('magicShape');
-                });
-                for (let j = i * columns - 1; j >= 0; j--) {
-                    cellElements[j + columns].className = cellElements[j].className;
+        });
+        setTimeout(() => {
+            rowsToDelete.forEach(rowIdx => {
+                const start = rowIdx * columns;
+                const end = start + columns;
+                for (let i = start; i < end; i++) {
+                    cellElements[i].className = 'cell';
                 }
-                for (let j = 0; j < columns; j++) {
-                    cellElements[j].className = 'cell';
+            });
+            for (let i = Math.max(...rowsToDelete) - 1; i >= 0; i--) {
+                let rowsBelow = rowsToDelete.filter(rowIdx => rowIdx > i).length;
+                if (rowsBelow > 0) {
+                    for (let j = 0; j < columns; j++) {
+                        const fromIdx = i * columns + j;
+                        const toIdx = (i + rowsBelow) * columns + j;
+                        cellElements[toIdx].className = cellElements[fromIdx].className;
+                        cellElements[fromIdx].className = 'cell';
+                    }
                 }
-                checkRows();
-            }, 880);
-            return;
-        }
+            }
+            checkRows(); 
+        }, 660);
+    } else {
+        startInterval();
+        drawShape();
     }
-    startInterval();
 }
 
 
@@ -353,10 +347,10 @@ function moveShape(event) {
 }
 
 function startGameFunction() {
+    document.getElementById('start-btn').style.display = 'none';
     createMainBoard()
     createBoard();
     createRandomShape()
-    
     drawShape();
     startInterval()
 }
