@@ -5,7 +5,6 @@ const rows = 20
 const cellCount = columns * rows
 const cellElements = []
 const startButton = document.getElementById('start-btn')
-
 const shapeChoices = ['L', 'Li', 'S', 'Si', 'M', 'O', 'I', 'T'];
 
 const shapes = {
@@ -75,10 +74,10 @@ const shapes = {
     T: {
         className: 'magicShape',
         rotations: [
-            [-(columns*2), -(columns*2) -1, -(columns*2) +1, -columns, 0],
-            [-(columns*2) +1, -(columns) -1, -(columns), -(columns) +1, 1],
-            [-(columns*2), -columns, -1, 0, 1],
-            [-(columns*2) -1,-(columns) -1, -(columns), -(columns) +1, -1], 
+            [-(columns*2)-1, -1, 0, 1, columns],
+            [-(columns*2), -(columns*2) +2, -(columns) -1, -(columns), 0],
+            [-(columns*2), -(columns) -1, -(columns), -(columns) +1, columns +1],
+            [-(columns*2) +1, -(columns) +1, -(columns) +2,  +1, -1], 
         ]
     }
 };
@@ -87,7 +86,6 @@ const shapes = {
 const gameOverDisplay = document.getElementById("gameOver")
 const toggleProjectionBtn = document.getElementById("toggleProjection")
 const toggleTPiecesBtn = document.getElementById("toggleTPieces")
-
 
 
 //variables
@@ -138,13 +136,37 @@ function gameOver() {
 }
 
 function stoppedShape() {
-    let highestRow = rows; 
-    for (let pos of shapes[currentShape].rotations[currentRotation]) {
-        const cellIdx = currentPos + pos;
-        cellElements[cellIdx].classList.add('occupied');
-        const row = Math.floor(cellIdx / columns);
-        if (row < highestRow) {
-            highestRow = row;
+    let highestRow = rows;
+
+    if (currentShape === "T") {
+        // Para cada bloque de la T
+        let tPositions = shapes["T"].rotations[currentRotation].map(offset => currentPos + offset);
+
+        tPositions.forEach(pos => {
+            let dropPos = pos;
+            // cada bloque cae hasta el fondo o hasta otro ocupado
+            while (dropPos + columns < cellCount &&
+                !cellElements[dropPos + columns].classList.contains('occupied')) {
+                dropPos += columns;
+
+                // cada celda por la que pase, la va ocupando
+                cellElements[dropPos].classList.add('occupied');
+                cellElements[dropPos].classList.add('magicShape');
+            }
+            // todos los bloques ocupados
+            cellElements[pos].classList.add('occupied');
+            cellElements[pos].classList.add('magicShape');
+
+            const row = Math.floor(dropPos / columns);
+            if (row < highestRow) highestRow = row;
+        });
+    } else {
+        // Comportamiento normal para el resto de piezas
+        for (let pos of shapes[currentShape].rotations[currentRotation]) {
+            const cellIdx = currentPos + pos;
+            cellElements[cellIdx].classList.add('occupied');
+            const row = Math.floor(cellIdx / columns);
+            if (row < highestRow) highestRow = row;
         }
     }
     let sumPoints = 2;
@@ -171,8 +193,10 @@ function stoppedShape() {
     scoreDisplay.textContent = score;
 }
 
+
+
 function createMainBoard() {
-    audio.volume = 0.6;
+    audio.volume = 0.7;
     const firstScreen = document.getElementById('firstScreen');
     const main = document.createElement('main');
     main.id = 'main-board';
@@ -241,6 +265,7 @@ function downCollision() {
     }
     return false;
 }
+
 
 
 
@@ -413,7 +438,7 @@ function moveShape(event) {
 
 
 const audio = document.getElementById('tetris-audio');
-audio.volume = 0.3;
+audio.volume = 0.2;
 
 
 
