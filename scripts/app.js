@@ -138,12 +138,41 @@ function gameOver() {
 }
 
 function stoppedShape() {
+    let highestRow = rows; 
     for (let pos of shapes[currentShape].rotations[currentRotation]) {
-        cellElements[currentPos + pos].classList.add('occupied');
+        const cellIdx = currentPos + pos;
+        cellElements[cellIdx].classList.add('occupied');
+        const row = Math.floor(cellIdx / columns);
+        if (row < highestRow) {
+            highestRow = row;
+        }
     }
+    let sumPoints = 2;
+    if (highestRow >= 19) sumPoints = 2;
+    else if (highestRow >= 18) sumPoints = 4;
+    else if (highestRow >= 17) sumPoints = 6;
+    else if (highestRow >= 16) sumPoints = 8;
+    else if (highestRow >= 15) sumPoints = 10;
+    else if (highestRow >= 14) sumPoints = 12;
+    else if (highestRow >= 13) sumPoints = 14;
+    else if (highestRow >= 12) sumPoints = 16;
+    else if (highestRow >= 11) sumPoints = 18;
+    else if (highestRow >= 10) sumPoints = 20;
+    else if (highestRow >= 9) sumPoints = 22;
+    else if (highestRow >= 8) sumPoints = 24;
+    else if (highestRow >= 7) sumPoints = 26;
+    else if (highestRow >= 6) sumPoints = 28;
+    else if (highestRow >= 5) sumPoints = 30;
+    else if (highestRow >= 4) sumPoints = 32;
+    else if (highestRow >= 3) sumPoints = 34;
+    else if (highestRow >= 2) sumPoints = 36;
+    else sumPoints = 40;
+    score += sumPoints;
+    scoreDisplay.textContent = score;
 }
 
 function createMainBoard() {
+    audio.volume = 0.8;
     const firstScreen = document.getElementById('firstScreen');
     const main = document.createElement('main');
     main.id = 'main-board';
@@ -382,6 +411,12 @@ function moveShape(event) {
     }
 }
 
+
+const audio = document.getElementById('tetris-audio');
+audio.volume = 0.3;
+
+
+
 function startGameFunction() {
     document.getElementById('start-btn').style.display = 'none';
     createMainBoard()
@@ -394,3 +429,5 @@ function startGameFunction() {
 
 startButton.addEventListener("click", startGameFunction) 
 document.addEventListener("keyup", moveShape)
+
+
