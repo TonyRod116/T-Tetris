@@ -110,6 +110,21 @@ function drawShape() {
     }
 }
 
+function drawNextShape() { //helped here, much easier with a board with the same number of columns as the main board
+    nextBoardCells.forEach(cell => {
+        cell.className = 'next-cell';
+    });
+    const shape = shapes[nextShape];
+    const rotation = shape.rotations[0];
+    const startingPosNext = 24;
+    for (let offset of rotation) {
+        let idx = startingPosNext + offset;
+        if (idx >= 0 && idx < nextBoardCells.length) {
+            nextBoardCells[idx].classList.add(shape.className);
+        }
+    }
+}
+
 function clearLastShape() {
     for (let pos of shapes[currentShape].rotations[currentRotation]) {
         let cell = cellElements[currentPos + pos];
@@ -165,7 +180,7 @@ function createNextBoard() {
     const nextBoard = document.getElementById('next-board');
     nextBoard.innerHTML = ''; 
     nextBoardCells = [];
-    for (let i = 0; i < 16; i++) {
+    for (let i = 0; i < 40; i++) {
         const cell = document.createElement('div');
         cell.classList.add('next-cell');
         nextBoard.appendChild(cell);
@@ -183,32 +198,6 @@ function createRandomShape() {
     drawNextShape();
 }
 
-
-function drawNextShape() {
-    // Limpia el mini-grid
-    nextBoardCells.forEach(cell => {
-        cell.className = 'next-cell';
-    });
-
-    const shape = shapes[nextShape];
-    const rotation = shape.rotations[0];
-    const basePos = 9; // Centrado en 4x4 (puedes probar 5 o 6 para ajustar)
-
-    for (let offset of rotation) {
-        // Offset está basado en columns=10, pero ahora queremos 4x4
-        let row = Math.floor(offset / columns);
-        let col = offset % columns;
-        if (col < 0) col += columns;
-
-        // Index para el grid 4x4
-        let idx = basePos + row * 4 + col;
-
-        // Solo pinta si el índice cae dentro del 4x4
-        if (idx >= 0 && idx < 16) {
-            nextBoardCells[idx].classList.add(shape.className);
-        }
-    }
-}
 
 
 function downCollision() {
