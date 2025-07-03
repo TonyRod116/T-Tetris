@@ -158,21 +158,21 @@ function stoppedShape() {
     else if (highestRow >= 12) sumPoints = 16;
     else if (highestRow >= 11) sumPoints = 18;
     else if (highestRow >= 10) sumPoints = 20;
-    else if (highestRow >= 9) sumPoints = 22;
-    else if (highestRow >= 8) sumPoints = 24;
-    else if (highestRow >= 7) sumPoints = 26;
-    else if (highestRow >= 6) sumPoints = 28;
-    else if (highestRow >= 5) sumPoints = 30;
-    else if (highestRow >= 4) sumPoints = 32;
-    else if (highestRow >= 3) sumPoints = 34;
-    else if (highestRow >= 2) sumPoints = 36;
-    else sumPoints = 40;
+    else if (highestRow >= 9) sumPoints = 23;
+    else if (highestRow >= 8) sumPoints = 27;
+    else if (highestRow >= 7) sumPoints = 35;
+    else if (highestRow >= 6) sumPoints = 40;
+    else if (highestRow >= 5) sumPoints = 45;
+    else if (highestRow >= 4) sumPoints = 50;
+    else if (highestRow >= 3) sumPoints = 60;
+    else if (highestRow >= 2) sumPoints = 70;
+    else sumPoints = 75;
     score += sumPoints;
     scoreDisplay.textContent = score;
 }
 
 function createMainBoard() {
-    audio.volume = 0.8;
+    audio.volume = 0.6;
     const firstScreen = document.getElementById('firstScreen');
     const main = document.createElement('main');
     main.id = 'main-board';
@@ -183,10 +183,10 @@ function createMainBoard() {
     const scoreboard = document.createElement('div');
     scoreboard.id = 'scoreboard';
     scoreboard.innerHTML = `
+        <h2>Score</h2>
+        <div id="score">0</div>    
         <h2>Next</h2>
         <div id="next-board"></div>
-        <h2>Score</h2>
-        <div id="score">0</div>
     `;
     main.appendChild(scoreboard);
     scoreDisplay = document.getElementById("score");

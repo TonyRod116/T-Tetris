@@ -1,14 +1,14 @@
 * {
     box-sizing: border-box;
-    margin: 0;
 }
 
 
 #tetrisLogo {
+    margin-top: 500px;
     display: block;
     margin: 0 auto;
-    max-width: 80%;
-    max-height: 80%;
+    max-width: 70%;
+    max-height: 70%;
 }
 
 #main-board {
@@ -36,42 +36,46 @@
     align-items: center;
     height: 1000px;
     width: 500px;
-    background-color: #99be9d;
+    background-image: url(../assets/T-Tetris_fondo1.jpg);
+    background-size: cover;
 }
 
 #score {
-    font-size: 20px;
+    display: flex;
+    flex-direction: row-reverse;
+    font-size: 30px;
     font-family: 'Press Start 2P', Courier, monospace;
-    margin-bottom: 600px;
-    margin-top: 20px;
-
+    margin-bottom: 20px;
+    margin-top: 35px;
 }
 
 #next-board {
     width: 400px;
-    height: 1600px; 
-    margin-top: 10px;
+    height: 160px; 
+    margin-top: 40px;
     font-family: 'Press Start 2P', Courier, monospace;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(4, 1fr);
+    margin-bottom: 600px;
 }
 
 .next-cell {
     width: 100%;
     aspect-ratio: 1 / 1;
-    background: #99be9d;
-    border: 1px solid #99be9d;
+    background: transparent;
     box-sizing: border-box;
 }
 
 h2 {
-    margin-top: 80px;
-    margin-bottom: 30px;
+    font-size: 30 px;
+    margin-top: 60px;
+    margin-bottom: 20px;
     font-family: 'Press Start 2P', Courier, monospace;
 }
 
 h3 {
+    font-size: 30px;
     font-family: 'Press Start 2P', Courier, monospace;
 }
 
@@ -146,7 +150,7 @@ h3 {
 }
 
 .magicShape {
-    background-image: url(../assets/magicShape.png);
+    background-image: url(../assets/TGIF.gif);
     background-size: cover;
 }
 
