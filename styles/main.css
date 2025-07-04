@@ -6,8 +6,8 @@
 #tetrisLogo {
     display: block;
     margin: 0 auto;
-    max-width: 30%;
-    max-height: 40%;
+    max-width: 20%;
+    max-height: 20%;
 }
 
 #main-board {
@@ -89,13 +89,25 @@ body {
     box-sizing: border-box;
 }
 
-@media (max-width: 1080px) {
+
+@media (max-width: 2000px) {
     #tetrisLogo {
-        max-width: 20vw;
-        max-height: 12vw;
+        max-width: 16vw;
+        max-height: 10vw;
     }
     #main-board {
-    transform: scale(0.7);
+    transform: scale(0.8);
+    }
+}
+
+
+@media (max-width: 1080px) {
+    #tetrisLogo {
+        max-width: 10vw;
+        max-height: 8vw;
+    }
+    #main-board {
+    transform: scale(0.8);
     }
 }
 
