@@ -132,8 +132,26 @@ function clearLastShape() {
 
 function gameOver() {
     clearInterval(interval);
-    alert("Game Over");
+    const cell54 = cellElements[54];
+    cell54.innerHTML = `
+    <div id="game-over-message">
+            <strong>Game Over</strong><br>
+            Score: <b>${score}</b>
+            <br><br>
+            <button id="restart-btn" style="
+            cursor:pointer;">
+            Restart
+            </button>
+        </div>
+    `;
+
+    cell54.className = '';
+
+    document.getElementById('restart-btn').onclick = function() {
+        window.location.reload();
+    }
 }
+
 
 function stoppedShape() {
     let highestRow = rows;

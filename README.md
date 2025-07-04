@@ -1,5 +1,4 @@
-# T-Tetris
-
+# T-TetrisTe
 A classic Tetris clone with a magical twist: **the T-piece dissolves** and fills all the cells beneath it, creating a unique gameplay experience!
 
 ![Gameplay Screenshot](./assets/screenshot.png) 
@@ -131,6 +130,14 @@ T-Tetris is a single-player browser game inspired by the original Tetris, but wi
 
 - Game developed by [Tony Rod](https://github.com/tonyrod116)
 - “Press Start 2P” font by [codeman38](https://fonts.google.com/specimen/Press+Start+2P)
+- Tetris theme: public domain
+- Inspired by the original Tetris
+
+---
+
+*Feel free to fork or submit PRs!*
+
+ecimen/Press+Start+2P)
 - Tetris theme: public domain
 - Inspired by the original Tetris
 
