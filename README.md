@@ -1,4 +1,4 @@
-# T-TetrisTe
+# ´T-Tris
 A classic Tetris clone with a magical twist: **the T-piece dissolves** and fills all the cells beneath it, creating a unique gameplay experience!
 
 ![Gameplay Screenshot](./assets/screenshot.png) 
@@ -73,8 +73,6 @@ T-Tetris is a single-player browser game inspired by the original Tetris, but wi
 - Next-piece board: 10x4 (same number of columns for easier rendering)
 - Iterative feature development (scoreboard, music, dissolving T, etc.)
 
-<!-- If you have sketches or Trello/Notion, link them here -->
-
 ---
 
 ## Code Process
@@ -96,6 +94,14 @@ T-Tetris is a single-player browser game inspired by the original Tetris, but wi
 - Making sure no “ghost” T-cells remained after animation.
 - Handling edge cases where dissolving T overlaps other pieces or at the board edge.
 - Syncing blink animation with T-dissolving logic.
+
+---
+
+## How to Play
+
+- Move and Rotate: Use the arrow keys to move the shapes. Up Arrow or D: Rotate the shape clockwise. A: Rotate the shape counterclockwise.
+- Clear Rows: When you complete a full row, it disappears and the blocks above will fall down to fill the empty space.
+- The game ends when there is no more room for new shapes at the top of the board.
 
 ---
 
