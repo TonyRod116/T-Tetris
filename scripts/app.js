@@ -132,21 +132,20 @@ function clearLastShape() {
 
 function gameOver() {
     clearInterval(interval);
-    const cell54 = cellElements[54];
-    cell54.innerHTML = `
-    <div id="game-over-message">
-            <strong>Game Over</strong><br>
-            Score: <b>${score}</b>
-            <br><br>
-            <button id="restart-btn" style="
-            cursor:pointer;">
-            Restart
-            </button>
+    let overlay = document.getElementById('game-over-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'game-over-overlay';
+        document.body.appendChild(overlay);
+    }
+    overlay.innerHTML = `
+        <div id="game-over-message">
+            <h2>Game Over</h2>
+            <p>Score: <b>${score}</b></p>
+            <button id="restart-btn">Restart</button>
         </div>
     `;
-
-    cell54.className = '';
-
+    overlay.style.display = 'flex';
     document.getElementById('restart-btn').onclick = function() {
         window.location.reload();
     }
@@ -155,26 +154,18 @@ function gameOver() {
 
 function stoppedShape() {
     let highestRow = rows;
-
     if (currentShape === "T") {
-        // Para cada bloque de la T
         let tPositions = shapes["T"].rotations[currentRotation].map(offset => currentPos + offset);
-
         tPositions.forEach(pos => {
             let dropPos = pos;
-            // cada bloque cae hasta el fondo o hasta otro ocupado
             while (dropPos + columns < cellCount &&
                 !cellElements[dropPos + columns].classList.contains('occupied')) {
                 dropPos += columns;
-
-                // cada celda por la que pase, la va ocupando
                 cellElements[dropPos].classList.add('occupied');
                 cellElements[dropPos].classList.add('magicShape');
             }
-            // todos los bloques ocupados
             cellElements[pos].classList.add('occupied');
             cellElements[pos].classList.add('magicShape');
-
             const row = Math.floor(dropPos / columns);
             if (row < highestRow) highestRow = row;
         });
@@ -251,7 +242,7 @@ function createNextBoard() {
     const nextBoard = document.getElementById('next-board');
     nextBoard.innerHTML = ''; 
     nextBoardCells = [];
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < cellCount; i++) {
         const cell = document.createElement('div');
         cell.classList.add('next-cell');
         nextBoard.appendChild(cell);
@@ -284,18 +275,15 @@ function downCollision() {
     return false;
 }
 
-
-
-
 function canRotate(nextRotation) {
     const nextCoords = shapes[currentShape].rotations[nextRotation];
-    const baseCol = currentPos % columns;  //got help for this one
+    const baseCol = currentPos % columns;  
     for (let i = 0; i < nextCoords.length; i++) {
         const idx = currentPos + nextCoords[i];
         if (idx < 0 || idx >= cellCount) return false;
         const col = idx % columns;
         if (col < 0 || col >= columns) return false;
-        if (Math.abs(col - baseCol) > 3) return false; // this one too
+        if (Math.abs(col - baseCol) > 3) return false; 
         if (cellElements[idx].classList.contains('occupied')) return false;
     }
     return true;
@@ -344,7 +332,7 @@ function checkRows() {
             const end = start + columns;
             cellElements.slice(start, end).forEach(cell => {
                 cell.classList.remove('blink');
-                void cell.offsetWidth;
+                void cell.offsetWidth; // helped here
                 cell.classList.add('blink');
             });
         });
@@ -356,7 +344,7 @@ function checkRows() {
                     cellElements[i].className = 'cell';
                 }
             });
-            for (let i = Math.max(...rowsToDelete) - 1; i >= 0; i--) {
+            for (let i = Math.max(...rowsToDelete) - 1; i >= 0; i--) { // helped here as well
                 let rowsBelow = rowsToDelete.filter(rowIdx => rowIdx > i).length;
                 if (rowsBelow > 0) {
                     for (let j = 0; j < columns; j++) {
@@ -457,7 +445,6 @@ function moveShape(event) {
 
 const audio = document.getElementById('tetris-audio');
 audio.volume = 0.2;
-
 
 
 function startGameFunction() {

@@ -89,81 +89,35 @@ body {
     box-sizing: border-box;
 }
 
-@media (max-width: 1200px) {
-
-    #board {
-    box-shadow: 5px 5px 10px 0px rgba(5, 73, 33, 0.8);
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(20, 1fr);
-    height: 500px;
-    width: 250px;
-    background-color: #355f39;
+@media (max-width: 1080px) {
+    #tetrisLogo {
+        max-width: 20vw;
+        max-height: 12vw;
     }
-
-#scoreboard {
-        box-shadow: 10px 10px 20px 0px rgba(5, 73, 33, 0.8);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        height: 500px;
-        width: 250px;
-        background-image: url(../assets/T-Tetris_fondo1.jpg);
-
-        background-size: cover;
-    }
-
-    #next-board {
-        width: 200px;
-        height: 80px; 
-        margin-top: 20px;
-        font-family: 'Press Start 2P', Courier, monospace;
-        display: grid;
-        grid-template-columns: repeat(10, 1fr);
-        grid-template-rows: repeat(4, 1fr);
-        margin-bottom: 300px;
-    }
-}
-
-@media (max-width: 600px) {
     #main-board {
-        flex-direction: column;
-        align-items: stretch;
-        min-height: unset;
-    }
-
-    #board, #scoreboard {
-        width: 96vw;
-        height: 96vw;
-        max-width: 330px;
-        max-height: 420px;
-        min-width: 110px;
-        min-height: 150px;
-    }
-    #scoreboard {
-        margin-top: 10px;
-        background-size: cover;
-    }
-    #next-board {
-        width: 98vw;
-        max-width: 200px;
-        min-width: 70px;
-        height: 40px;
-        margin-bottom: 20px;
-    }
-    #score {
-        font-size: 18px;
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-    h2, h3 {
-        font-size: 16px;
-        margin-top: 12px;
-        margin-bottom: 10px;
+    transform: scale(0.7);
     }
 }
 
+@media (max-width: 800px) {
+    #tetrisLogo {
+        max-width: 20vw;
+        max-height: 12vw;
+    }
+    #main-board {
+    transform: scale(0.5);
+    }
+}
+
+@media (max-width: 500px) {
+    #tetrisLogo {
+        max-width: 20vw;
+        max-height: 12vw;
+    }
+    #main-board {
+    transform: scale(0.4);
+    }
+}
 
 
 #start-game {
@@ -237,18 +191,55 @@ body {
     100% { background-color: white; }
 }
 
+#game-over-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(40,40,40,0.75); /* semitransparente */
+    display: none; /* solo se muestra al game over */
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadein 0.5s;
+}
+
 #game-over-message {
-    box-shadow: 0 0 30px #222;
-    font-family: 'Press Start 2P', Courier, monospace;
-    letter-spacing: 1px;
-    background: rgba(170, 4, 4, 0.8);
+    background: rgba(30,50,50,0.96);
     color: #fff;
-    font-size: 1.2rem;
-    font-family: 'Press Start 2P', Courier, monospace;
-    padding: 18px 10px;
-    border-radius: 14px;
+    border-radius: 18px;
+    box-shadow: 0 4px 32px #000b, 0 2px 4px #0006;
+    padding: 44px 36px 36px 36px;
     text-align: center;
-    box-shadow: 0 0 14px #000000;
+    font-family: 'Press Start 2P', Courier, monospace;
+    font-size: 1.5rem;
+    min-width: 260px;
+    max-width: 90vw;
+    border: 3px solid #a18b09;
+    animation: popin 0.4s;
+}
+
+#game-over-message h2 {
+    margin-bottom: 16px;
+    font-size: 2.1rem;
+    color: #ff4242;
+    text-shadow: 1px 2px 2px #0008;
+}
+#game-over-message button {
+    margin-top: 30px;
+    font-size: 1.2rem;
+    border-radius: 9px;
+    padding: 12px 30px;
+    background: #a18b09;
+    color: #fff;
+    border: none;
+    font-family: 'Press Start 2P', Courier, monospace;
+    box-shadow: 0 2px 8px #0007;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+#game-over-message button:hover {
+    background: #075f1d;
 }
 
 #restart-btn {
@@ -260,4 +251,14 @@ body {
     color: #fff;
     border: none;
     font-family: 'Press Start 2P', Courier, monospace;
+}
+
+@keyframes fadein {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+@keyframes popin {
+    0% { transform: scale(0.7); opacity: 0; }
+    90% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); }
 }
