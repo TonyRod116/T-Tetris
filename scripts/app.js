@@ -132,21 +132,20 @@ function clearLastShape() {
 
 function gameOver() {
     clearInterval(interval);
-    const cell54 = cellElements[54];
-    cell54.innerHTML = `
-    <div id="game-over-message">
-            <strong>Game Over</strong><br>
-            Score: <b>${score}</b>
-            <br><br>
-            <button id="restart-btn" style="
-            cursor:pointer;">
-            Restart
-            </button>
+    let overlay = document.getElementById('game-over-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'game-over-overlay';
+        document.body.appendChild(overlay);
+    }
+    overlay.innerHTML = `
+        <div id="game-over-message">
+            <h2>Game Over</h2>
+            <p>Score: <b>${score}</b></p>
+            <button id="restart-btn">Restart</button>
         </div>
     `;
-
-    cell54.className = '';
-
+    overlay.style.display = 'flex';
     document.getElementById('restart-btn').onclick = function() {
         window.location.reload();
     }
@@ -155,7 +154,6 @@ function gameOver() {
 
 function stoppedShape() {
     let highestRow = rows;
-
     if (currentShape === "T") {
         let tPositions = shapes["T"].rotations[currentRotation].map(offset => currentPos + offset);
         tPositions.forEach(pos => {
