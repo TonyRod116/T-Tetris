@@ -157,24 +157,17 @@ function stoppedShape() {
     let highestRow = rows;
 
     if (currentShape === "T") {
-        // Para cada bloque de la T
         let tPositions = shapes["T"].rotations[currentRotation].map(offset => currentPos + offset);
-
         tPositions.forEach(pos => {
             let dropPos = pos;
-            // cada bloque cae hasta el fondo o hasta otro ocupado
             while (dropPos + columns < cellCount &&
                 !cellElements[dropPos + columns].classList.contains('occupied')) {
                 dropPos += columns;
-
-                // cada celda por la que pase, la va ocupando
                 cellElements[dropPos].classList.add('occupied');
                 cellElements[dropPos].classList.add('magicShape');
             }
-            // todos los bloques ocupados
             cellElements[pos].classList.add('occupied');
             cellElements[pos].classList.add('magicShape');
-
             const row = Math.floor(dropPos / columns);
             if (row < highestRow) highestRow = row;
         });
@@ -251,7 +244,7 @@ function createNextBoard() {
     const nextBoard = document.getElementById('next-board');
     nextBoard.innerHTML = ''; 
     nextBoardCells = [];
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < cellCount; i++) {
         const cell = document.createElement('div');
         cell.classList.add('next-cell');
         nextBoard.appendChild(cell);
@@ -284,18 +277,15 @@ function downCollision() {
     return false;
 }
 
-
-
-
 function canRotate(nextRotation) {
     const nextCoords = shapes[currentShape].rotations[nextRotation];
-    const baseCol = currentPos % columns;  //got help for this one
+    const baseCol = currentPos % columns;  
     for (let i = 0; i < nextCoords.length; i++) {
         const idx = currentPos + nextCoords[i];
         if (idx < 0 || idx >= cellCount) return false;
         const col = idx % columns;
         if (col < 0 || col >= columns) return false;
-        if (Math.abs(col - baseCol) > 3) return false; // this one too
+        if (Math.abs(col - baseCol) > 3) return false; 
         if (cellElements[idx].classList.contains('occupied')) return false;
     }
     return true;
@@ -344,7 +334,7 @@ function checkRows() {
             const end = start + columns;
             cellElements.slice(start, end).forEach(cell => {
                 cell.classList.remove('blink');
-                void cell.offsetWidth;
+                void cell.offsetWidth; // helped here
                 cell.classList.add('blink');
             });
         });
@@ -356,7 +346,7 @@ function checkRows() {
                     cellElements[i].className = 'cell';
                 }
             });
-            for (let i = Math.max(...rowsToDelete) - 1; i >= 0; i--) {
+            for (let i = Math.max(...rowsToDelete) - 1; i >= 0; i--) { // helped here as well
                 let rowsBelow = rowsToDelete.filter(rowIdx => rowIdx > i).length;
                 if (rowsBelow > 0) {
                     for (let j = 0; j < columns; j++) {
@@ -457,7 +447,6 @@ function moveShape(event) {
 
 const audio = document.getElementById('tetris-audio');
 audio.volume = 0.2;
-
 
 
 function startGameFunction() {
